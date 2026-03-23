@@ -476,15 +476,30 @@
     `;
   }
 
+  // Send height to parent for iframe auto-resize
+  function notifyHeight() {
+    var height = document.getElementById('widget').scrollHeight;
+    window.parent.postMessage({ type: 'gas-tracker-resize', height: height }, '*');
+  }
+
+  // Observe size changes
+  var resizeObserver = new ResizeObserver(notifyHeight);
+  resizeObserver.observe(document.getElementById('widget'));
+
   fetch(DATA_URL)
     .then(function(res) {
       if (!res.ok) throw new Error('Failed to load');
       return res.json();
     })
-    .then(render)
+    .then(function(data) {
+      render(data);
+      // Notify after animations settle
+      setTimeout(notifyHeight, 600);
+    })
     .catch(function(err) {
       console.error('Gas Price Widget Error:', err);
       showError();
+      setTimeout(notifyHeight, 100);
     });
 })();
 </script>

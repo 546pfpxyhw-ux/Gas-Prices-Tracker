@@ -26,15 +26,25 @@ npm start
 
 ## Embed Code
 
+Paste both snippets into your CMS article. The iframe loads the widget; the script auto-resizes it to fit.
+
 ```html
 <iframe
+  id="gas-tracker"
   src="https://[YOUR-URL]/gas-prices.html"
   width="100%"
   style="max-width: 650px; border: none; overflow: hidden;"
-  height="620"
+  height="800"
   title="U.S. Gas Price Tracker"
   loading="lazy"
 ></iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'gas-tracker-resize') {
+    document.getElementById('gas-tracker').style.height = e.data.height + 'px';
+  }
+});
+</script>
 ```
 
 ## Deployment
