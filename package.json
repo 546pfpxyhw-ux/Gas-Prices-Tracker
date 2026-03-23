@@ -1,0 +1,17 @@
+{
+  "name": "gas-price-tracker",
+  "version": "1.0.0",
+  "description": "Self-updating embeddable widget displaying U.S. national gas prices",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "fetch": "node fetch-prices.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-cron": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
