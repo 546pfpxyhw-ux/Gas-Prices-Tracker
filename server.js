@@ -37,7 +37,7 @@ app.listen(PORT, () => {
   });
 });
 
-// Schedule daily fetch at 9:00 AM ET (after EIA publishes ~7:30-8:30 AM ET)
+// Schedule daily fetch at 9:00 AM ET (AAA updates daily, EIA weekly on Mondays)
 cron.schedule('0 9 * * *', () => {
   console.log('Running scheduled gas price fetch...');
   updatePrices().catch(err => {

@@ -45,6 +45,66 @@
     font-size: 16px;
   }
 
+  /* Local price callout */
+  .local-section {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .local-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #a5b4fc;
+    margin-bottom: 6px;
+  }
+
+  .local-price {
+    font-size: 40px;
+    font-weight: 800;
+    color: #c7d2fe;
+    line-height: 1.1;
+  }
+
+  .local-price .local-unit {
+    font-size: 16px;
+    font-weight: 600;
+    vertical-align: super;
+    color: #818cf8;
+  }
+
+  .local-change {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .local-change.up {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+  }
+
+  .local-change.down {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  .local-vs {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
   /* Big Price */
   .price-section {
     text-align: center;
@@ -107,7 +167,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     font-size: 13px;
     color: #94a3b8;
   }
@@ -121,37 +181,44 @@
     color: #cbd5e1;
   }
 
+  /* Splashy percentage badges */
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 6px 14px;
+    gap: 6px;
+    padding: 10px 20px;
     border-radius: 50px;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
+    position: relative;
   }
 
   .badge.up {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.3) 100%);
+    color: #fca5a5;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .badge.down {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.3) 100%);
+    color: #86efac;
+    border: 2px solid rgba(34, 197, 94, 0.3);
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 0 24px rgba(34, 197, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .badge .arrow {
-    font-size: 14px;
+    font-size: 22px;
   }
 
   .dollar-change {
     font-size: 12px;
     color: #64748b;
-    margin-top: 6px;
+    margin-top: 10px;
     font-weight: 500;
   }
 
@@ -280,12 +347,6 @@
     opacity: 0;
   }
 
-  .animate-in:nth-child(1) { animation-delay: 0.05s; }
-  .animate-in:nth-child(2) { animation-delay: 0.15s; }
-  .animate-in:nth-child(3) { animation-delay: 0.25s; }
-  .animate-in:nth-child(4) { animation-delay: 0.35s; }
-  .animate-in:nth-child(5) { animation-delay: 0.45s; }
-
   @keyframes countUp {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -297,14 +358,35 @@
   }
 
   @keyframes badgePop {
-    0% { transform: scale(0.8); opacity: 0; }
-    60% { transform: scale(1.05); }
+    0% { transform: scale(0.6); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.95); }
     100% { transform: scale(1); opacity: 1; }
   }
 
   .badge-animate {
-    animation: badgePop 0.4s ease-out 0.3s forwards;
+    animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
     opacity: 0;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 24px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    50% { box-shadow: 0 0 32px rgba(239, 68, 68, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+  }
+
+  @keyframes glowPulseGreen {
+    0%, 100% { box-shadow: 0 0 24px rgba(34, 197, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    50% { box-shadow: 0 0 32px rgba(34, 197, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+  }
+
+  .badge.up.badge-animate {
+    animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards,
+               glowPulse 2s ease-in-out 0.8s infinite;
+  }
+
+  .badge.down.badge-animate {
+    animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards,
+               glowPulseGreen 2s ease-in-out 0.8s infinite;
   }
 
   /* Responsive */
@@ -328,6 +410,19 @@
 
     .card-label {
       min-height: auto;
+    }
+
+    .badge {
+      font-size: 24px;
+      padding: 8px 16px;
+    }
+
+    .badge .arrow {
+      font-size: 18px;
+    }
+
+    .local-price {
+      font-size: 32px;
     }
 
     .region-row {
@@ -362,7 +457,8 @@
 
 <script>
 (function() {
-  const DATA_URL = './data/gas-prices.json';
+  var DATA_URL = './data/gas-prices.json';
+  var GEO_URL = 'http://ip-api.com/json/?fields=status,regionName';
 
   function formatPrice(price) {
     return '$' + price.toFixed(2);
@@ -373,12 +469,12 @@
   }
 
   function formatChange(change) {
-    const prefix = change >= 0 ? '+' : '-';
+    var prefix = change >= 0 ? '+' : '-';
     return prefix + '$' + Math.abs(change).toFixed(2);
   }
 
   function formatDate(dateStr) {
-    const d = new Date(dateStr + 'T00:00:00');
+    var d = new Date(dateStr + 'T00:00:00');
     return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
 
@@ -386,94 +482,120 @@
     return ((current - baseline) / baseline) * 100;
   }
 
-  function buildComparisonCard(label, baselinePrice, currentPrice, animDelay) {
-    const change = currentPrice - baselinePrice;
-    const pct = pctChange(currentPrice, baselinePrice);
-    const isUp = change >= 0;
-    const dirClass = isUp ? 'up' : 'down';
-    const arrow = isUp ? '↑' : '↓';
+  function buildLocalSection(state) {
+    var iranPct = pctChange(state.current, state.iranWar);
+    var isUp = iranPct >= 0;
+    var dirClass = isUp ? 'up' : 'down';
+    var arrow = isUp ? '\u2191' : '\u2193';
 
-    return `
-      <div class="card animate-in" style="animation-delay: ${animDelay}s">
-        <div class="card-label">${label}</div>
-        <div class="card-prices">
-          <span class="card-price-val">${formatPrice(baselinePrice)}</span>
-          <span class="arrow-connector">→</span>
-          <span class="card-price-val">${formatPrice(currentPrice)}</span>
-        </div>
-        <div class="badge badge-animate ${dirClass}">
-          <span class="arrow">${arrow}</span>
-          ${formatPct(pct)}
-        </div>
-        <div class="dollar-change">${formatChange(change)} per gallon</div>
-      </div>
-    `;
+    return '<div class="local-section animate-in" style="animation-delay: 0.08s">' +
+      '<div class="local-label">\uD83D\uDCCD Gas in ' + state.name + '</div>' +
+      '<div class="local-price">' + formatPrice(state.current) + '<span class="local-unit">/gal</span></div>' +
+      '<div class="local-change ' + dirClass + '">' + arrow + ' ' + formatPct(iranPct) + ' since Iran war</div>' +
+      '<div class="local-vs">vs. ' + formatPrice(state.iranWar) + ' regional avg on Feb 27</div>' +
+    '</div>';
+  }
+
+  function buildComparisonCard(label, baselinePrice, currentPrice, animDelay) {
+    var change = currentPrice - baselinePrice;
+    var pct = pctChange(currentPrice, baselinePrice);
+    var isUp = change >= 0;
+    var dirClass = isUp ? 'up' : 'down';
+    var arrow = isUp ? '\u2191' : '\u2193';
+
+    return '<div class="card animate-in" style="animation-delay: ' + animDelay + 's">' +
+      '<div class="card-label">' + label + '</div>' +
+      '<div class="card-prices">' +
+        '<span class="card-price-val">' + formatPrice(baselinePrice) + '</span>' +
+        '<span class="arrow-connector">\u2192</span>' +
+        '<span class="card-price-val">' + formatPrice(currentPrice) + '</span>' +
+      '</div>' +
+      '<div class="badge badge-animate ' + dirClass + '">' +
+        '<span class="arrow">' + arrow + '</span>' +
+        formatPct(pct) +
+      '</div>' +
+      '<div class="dollar-change">' + formatChange(change) + ' per gallon</div>' +
+    '</div>';
   }
 
   function buildRegionRow(region, index) {
-    // Use the more dramatic change for the badge
-    const inaugPct = pctChange(region.current, region.inauguration);
-    const iranPct = pctChange(region.current, region.iranWar);
-    const usePct = Math.abs(iranPct) > Math.abs(inaugPct) ? iranPct : inaugPct;
-    const isUp = usePct >= 0;
-    const dirClass = isUp ? 'up' : 'down';
-    const arrow = isUp ? '↑' : '↓';
+    var inaugPct = pctChange(region.current, region.inauguration);
+    var iranPct = pctChange(region.current, region.iranWar);
+    var usePct = Math.abs(iranPct) > Math.abs(inaugPct) ? iranPct : inaugPct;
+    var isUp = usePct >= 0;
+    var dirClass = isUp ? 'up' : 'down';
+    var arrow = isUp ? '\u2191' : '\u2193';
 
-    return `
-      <div class="region-row animate-in" style="animation-delay: ${0.4 + index * 0.06}s">
-        <span class="region-name">${region.name}</span>
-        <span class="region-price">${formatPrice(region.current)}</span>
-        <span class="region-badge ${dirClass}">${arrow} ${formatPct(usePct)}</span>
-      </div>
-    `;
+    return '<div class="region-row animate-in" style="animation-delay: ' + (0.4 + index * 0.06) + 's">' +
+      '<span class="region-name">' + region.name + '</span>' +
+      '<span class="region-price">' + formatPrice(region.current) + '</span>' +
+      '<span class="region-badge ' + dirClass + '">' + arrow + ' ' + formatPct(usePct) + '</span>' +
+    '</div>';
   }
 
-  function render(data) {
-    const widget = document.getElementById('widget');
-    const nat = data.national;
+  function render(data, userState) {
+    var widget = document.getElementById('widget');
+    var nat = data.national;
 
-    const regionsHTML = data.regions.map((r, i) => buildRegionRow(r, i)).join('');
+    var localHTML = '';
+    if (userState && data.states && data.states.length > 0) {
+      var match = data.states.find(function(s) {
+        return s.name.toLowerCase() === userState.toLowerCase();
+      });
+      if (match) {
+        localHTML = buildLocalSection(match);
+      }
+    }
 
-    widget.innerHTML = `
-      <div class="header animate-in">
-        <span class="header-icon">⛽</span>
-        U.S. GAS PRICE TRACKER
-      </div>
+    var regionsHTML = data.regions
+      .filter(function(r) { return r.current != null; })
+      .map(function(r, i) { return buildRegionRow(r, i); })
+      .join('');
 
-      <div class="price-section animate-in">
-        <div class="big-price price-animate">
-          ${formatPrice(nat.current)}<span class="unit">/gal</span>
-        </div>
-        <div class="price-subtitle">Regular unleaded · Data as of ${formatDate(data.eiaDataDate)}</div>
-      </div>
+    var sourceLabel = data.dataSource === 'AAA'
+      ? 'Source: AAA &middot; Updated daily'
+      : 'Source: U.S. Energy Information Administration';
 
-      <div class="comparisons">
-        ${buildComparisonCard(nat.iranWar.label, nat.iranWar.price, nat.current, 0.25)}
-        ${buildComparisonCard(nat.inauguration.label, nat.inauguration.price, nat.current, 0.35)}
-      </div>
+    widget.innerHTML =
+      '<div class="header animate-in">' +
+        '<span class="header-icon">\u26FD</span>' +
+        'U.S. GAS PRICE TRACKER' +
+      '</div>' +
 
-      <div class="regions-section animate-in" style="animation-delay: 0.4s">
-        <div class="regions-header">Regional Prices</div>
-        ${regionsHTML}
-      </div>
+      localHTML +
 
-      <div class="footer animate-in" style="animation-delay: 0.7s">
-        Source: U.S. Energy Information Administration
-      </div>
-    `;
+      '<div class="price-section animate-in">' +
+        '<div class="big-price price-animate">' +
+          formatPrice(nat.current) + '<span class="unit">/gal</span>' +
+        '</div>' +
+        '<div class="price-subtitle">National avg \u00B7 Regular unleaded \u00B7 ' + formatDate(data.dataDate) + '</div>' +
+      '</div>' +
+
+      '<div class="comparisons">' +
+        buildComparisonCard(nat.iranWar.label, nat.iranWar.price, nat.current, 0.25) +
+        buildComparisonCard(nat.inauguration.label, nat.inauguration.price, nat.current, 0.35) +
+      '</div>' +
+
+      '<div class="regions-section animate-in" style="animation-delay: 0.4s">' +
+        '<div class="regions-header">Regional Prices</div>' +
+        regionsHTML +
+      '</div>' +
+
+      '<div class="footer animate-in" style="animation-delay: 0.7s">' +
+        sourceLabel +
+      '</div>';
   }
 
   function showError() {
-    const widget = document.getElementById('widget');
-    widget.innerHTML = `
-      <div class="error-state">
-        <div class="error-icon">⛽</div>
-        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">
-          Price data temporarily unavailable
-        </div>
-        <div style="font-size: 12px;">Please check back later.</div>
-      </div>
-    `;
+    var widget = document.getElementById('widget');
+    widget.innerHTML =
+      '<div class="error-state">' +
+        '<div class="error-icon">\u26FD</div>' +
+        '<div style="font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #94a3b8;">' +
+          'Price data temporarily unavailable' +
+        '</div>' +
+        '<div style="font-size: 12px;">Please check back later.</div>' +
+      '</div>';
   }
 
   // Send height to parent for iframe auto-resize
@@ -486,14 +608,25 @@
   var resizeObserver = new ResizeObserver(notifyHeight);
   resizeObserver.observe(document.getElementById('widget'));
 
-  fetch(DATA_URL)
-    .then(function(res) {
-      if (!res.ok) throw new Error('Failed to load');
-      return res.json();
+  // Fetch data and optionally geolocate the reader
+  var dataPromise = fetch(DATA_URL).then(function(res) {
+    if (!res.ok) throw new Error('Failed to load');
+    return res.json();
+  });
+
+  var geoPromise = fetch(GEO_URL)
+    .then(function(res) { return res.json(); })
+    .then(function(geo) {
+      if (geo.status === 'success' && geo.regionName) {
+        return geo.regionName;
+      }
+      return null;
     })
-    .then(function(data) {
-      render(data);
-      // Notify after animations settle
+    .catch(function() { return null; });
+
+  Promise.all([dataPromise, geoPromise])
+    .then(function(results) {
+      render(results[0], results[1]);
       setTimeout(notifyHeight, 600);
     })
     .catch(function(err) {
