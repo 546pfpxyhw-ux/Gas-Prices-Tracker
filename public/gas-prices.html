@@ -149,16 +149,8 @@
   }
 
   .card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 24px;
+    padding: 8px 24px 24px;
     text-align: center;
-    transition: background 0.2s;
-  }
-
-  .card:hover {
-    background: #f1f5f9;
   }
 
   .card-label {
@@ -498,7 +490,7 @@
       '<div class="local-label">\uD83D\uDCCD Gas in ' + state.name + '</div>' +
       '<div class="local-price">' + formatPrice(state.current) + '<span class="local-unit">/gal</span></div>' +
       '<div class="local-change ' + dirClass + '">' + arrow + ' ' + formatPct(iranPct) + ' since Iran war</div>' +
-      '<div class="local-vs">vs. ' + formatPrice(state.iranWar) + ' regional avg on Feb 27</div>' +
+      '<div class="local-vs">vs. ' + formatPrice(state.iranWar) + ' regional average on Feb 27</div>' +
     '</div>';
   }
 
@@ -580,8 +572,8 @@
           var iranPct = pctChange(nat.current, nat.iranWar.price);
           var yikes = Math.abs(iranPct) > 20 ? 'YIKES: ' : '';
           var label = nat.current >= nat.iranWar.price
-            ? yikes + "Here's how much gas prices have spiked since Trump launched his war with Iran"
-            : yikes + "Here's how much gas prices have dropped since Trump launched his war with Iran";
+            ? yikes + "Here's how much gas prices have spiked nationwide since Trump launched his war with Iran"
+            : yikes + "Here's how much gas prices have dropped nationwide since Trump launched his war with Iran";
           return buildComparisonCard(label, nat.iranWar.price, nat.current, 0.25);
         })() +
       '</div>' +
