@@ -51,12 +51,14 @@ app.listen(PORT, () => {
   });
 });
 
-// Schedule daily fetch at 9:00 AM ET (AAA updates daily, EIA weekly on Mondays)
-cron.schedule('0 9 * * *', () => {
-  console.log('Running scheduled gas price fetch...');
-  updatePrices().catch(err => {
-    console.error('Scheduled price fetch failed:', err.message);
+// Schedule daily fetches at 7:00 AM and 11:00 AM ET
+['0 7 * * *', '0 11 * * *'].forEach(function(schedule) {
+  cron.schedule(schedule, () => {
+    console.log('Running scheduled gas price fetch...');
+    updatePrices().catch(err => {
+      console.error('Scheduled price fetch failed:', err.message);
+    });
+  }, {
+    timezone: 'America/New_York'
   });
-}, {
-  timezone: 'America/New_York'
 });
