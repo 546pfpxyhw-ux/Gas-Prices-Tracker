@@ -111,6 +111,15 @@
     margin-bottom: 28px;
   }
 
+  .price-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
   .big-price {
     font-size: 72px;
     font-weight: 800;
@@ -153,10 +162,10 @@
   }
 
   .card-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #64748b;
-    line-height: 1.5;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334155;
+    line-height: 1.4;
     margin-bottom: 16px;
   }
 
@@ -556,18 +565,14 @@
       '<br>This application was built with the assistance of AI';
 
     widget.innerHTML =
-      '<div class="header animate-in">' +
-        '<span class="header-icon">\u26FD</span>' +
-        'U.S. GAS PRICE TRACKER' +
-      '</div>' +
-
       localHTML +
 
       '<div class="price-section animate-in">' +
+        '<div class="price-label">\u26FD U.S. National Average \u00B7 ' + formatDate(data.dataDate) + '</div>' +
         '<div class="big-price price-animate">' +
           formatPrice(nat.current) + '<span class="unit">/gal</span>' +
         '</div>' +
-        '<div class="price-subtitle">National avg \u00B7 Regular unleaded \u00B7 ' + formatDate(data.dataDate) + '</div>' +
+        '<div class="price-subtitle">Regular unleaded</div>' +
       '</div>' +
 
       '<div class="comparisons">' +
