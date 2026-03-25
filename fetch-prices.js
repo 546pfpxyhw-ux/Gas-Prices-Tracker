@@ -66,11 +66,13 @@ async function fetchAAAPrices() {
   }
 
   const targetUrl = 'https://gasprices.aaa.com/state-gas-price-averages/';
-  const apiUrl = `https://api.scrapingfish.com/api/v1/?api_key=${SCRAPING_FISH_API_KEY}&url=${encodeURIComponent(targetUrl)}`;
+  const apiUrl = `https://api.scrapingfish.com/api/v1/?api_key=${SCRAPING_FISH_API_KEY}&url=${encodeURIComponent(targetUrl)}&render_js=true&render_js_timeout_ms=15000`;
 
   console.log('Fetching AAA gas prices via Scraping Fish...');
   const response = await fetch(apiUrl);
   if (!response.ok) {
+    const body = await response.text().catch(() => '(could not read response body)');
+    console.error(`Scraping Fish error response body: ${body}`);
     throw new Error(`Scraping Fish returned ${response.status}: ${response.statusText}`);
   }
 
