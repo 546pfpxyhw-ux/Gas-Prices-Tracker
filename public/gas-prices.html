@@ -453,7 +453,7 @@
 <script>
 (function() {
   var DATA_URL = './data/gas-prices.json';
-  var GEO_URL = 'http://ip-api.com/json/?fields=status,regionName';
+  var GEO_URL = 'https://ipapi.co/json/';
 
   function formatPrice(price) {
     return '$' + price.toFixed(2);
@@ -620,8 +620,8 @@
   var geoPromise = fetch(GEO_URL)
     .then(function(res) { return res.json(); })
     .then(function(geo) {
-      if (geo.status === 'success' && geo.regionName) {
-        return geo.regionName;
+      if (geo.region) {
+        return geo.region;
       }
       return null;
     })
