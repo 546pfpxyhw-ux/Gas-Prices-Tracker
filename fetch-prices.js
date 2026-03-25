@@ -300,16 +300,19 @@ async function updatePrices() {
     dataDate = new Date().toISOString().split('T')[0]; // AAA is daily
     dataSource = 'AAA';
     console.log(`Using AAA data: national avg $${nationalPrice.toFixed(3)}`);
+  } else if (fs.existsSync(DATA_FILE)) {
+    // AAA failed — prefer cached data (likely yesterday's AAA) over weekly EIA
+    const cached = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    console.warn(`AAA fetch failed. Keeping cached ${cached.dataSource} data from ${cached.dataDate}.`);
+    return;
   } else if (eiaPrices && eiaPrices.NUS) {
+    // No cached data at all — use EIA as bootstrap source
     nationalPrice = eiaPrices.NUS;
     dataDate = eiaDataDate;
     dataSource = 'EIA';
-    console.log(`Using EIA fallback: national avg $${nationalPrice.toFixed(3)}`);
+    console.log(`No cached data available. Using EIA bootstrap: national avg $${nationalPrice.toFixed(3)}`);
   } else {
-    console.error('Both AAA and EIA fetches failed.');
-    if (fs.existsSync(DATA_FILE)) {
-      console.log('Keeping previous data file.');
-    }
+    console.error('Both AAA and EIA fetches failed and no cached data exists.');
     throw new Error('No price data available from any source');
   }
 
