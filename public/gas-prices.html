@@ -514,9 +514,8 @@
   }
 
   function buildRegionRow(region, index) {
-    var inaugPct = pctChange(region.current, region.inauguration);
     var iranPct = pctChange(region.current, region.iranWar);
-    var usePct = Math.abs(iranPct) > Math.abs(inaugPct) ? iranPct : inaugPct;
+    var usePct = iranPct;
     var isUp = usePct >= 0;
     var dirClass = isUp ? 'up' : 'down';
     var arrow = isUp ? '\u2191' : '\u2193';
@@ -570,16 +569,14 @@
       '</div>' +
 
       '<div class="comparisons">' +
-        buildComparisonCard(
-          nat.current >= nat.iranWar.price
-            ? "Here's how much gas prices have spiked since Trump launched his war with Iran"
-            : "Here's how much gas prices have dropped since Trump launched his war with Iran",
-          nat.iranWar.price, nat.current, 0.25) +
-        buildComparisonCard(
-          nat.current >= nat.inauguration.price
-            ? "Here's how much gas prices have jumped since Trump took office in 2025"
-            : "Here's how much gas prices have decreased since Trump took office in 2025",
-          nat.inauguration.price, nat.current, 0.35) +
+        (function() {
+          var iranPct = pctChange(nat.current, nat.iranWar.price);
+          var yikes = Math.abs(iranPct) > 20 ? 'YIKES: ' : '';
+          var label = nat.current >= nat.iranWar.price
+            ? yikes + "Here's how much gas prices have spiked since Trump launched his war with Iran"
+            : yikes + "Here's how much gas prices have dropped since Trump launched his war with Iran";
+          return buildComparisonCard(label, nat.iranWar.price, nat.current, 0.25);
+        })() +
       '</div>' +
 
       '<div class="regions-section animate-in" style="animation-delay: 0.4s">' +
