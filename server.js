@@ -27,6 +27,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Manual price refresh (protected by secret key)
+app.get('/api/refresh-prices', async (req, res) => {
+  const secret = process.env.REFRESH_SECRET;
+  if (!secret || req.query.key !== secret) {
+    return res.status(403).json({ error: 'Invalid or missing key' });
+  }
+  try {
+    await updatePrices();
+    res.json({ status: 'ok', message: 'Prices refreshed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Gas Price Tracker server running on port ${PORT}`);
