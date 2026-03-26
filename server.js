@@ -46,7 +46,7 @@ app.get('/api/geo', async (req, res) => {
   try {
     const forwarded = req.headers['x-forwarded-for'];
     const ip = forwarded ? forwarded.split(',')[0].trim() : req.socket.remoteAddress;
-    const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+    const geoRes = await fetch(`http://ipwho.is/${ip}`);
     if (!geoRes.ok) {
       return res.json({ region: null });
     }
