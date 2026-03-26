@@ -50,6 +50,27 @@ const STATE_TO_PADD = {
   'Nevada': 'R50', 'Oregon': 'R50', 'Washington': 'R50'
 };
 
+// --- State gasoline consumption weights (EIA SEDS 2023, thousand barrels) ---
+// Source: U.S. Energy Information Administration, State Energy Data System, Table F10
+const STATE_GAS_CONSUMPTION = {
+  'Alabama': 75008, 'Alaska': 6248, 'Arizona': 70888, 'Arkansas': 36356,
+  'California': 314286, 'Colorado': 52948, 'Connecticut': 28924, 'Delaware': 9380,
+  'District of Columbia': 2692, 'Florida': 223810, 'Georgia': 136048,
+  'Hawaii': 10780, 'Idaho': 18928, 'Illinois': 104216, 'Indiana': 75832,
+  'Iowa': 35308, 'Kansas': 28240, 'Kentucky': 53872, 'Louisiana': 55692,
+  'Maine': 14924, 'Maryland': 51604, 'Massachusetts': 51488,
+  'Michigan': 92060, 'Minnesota': 54316, 'Mississippi': 38632,
+  'Missouri': 71260, 'Montana': 12236, 'Nebraska': 21132,
+  'Nevada': 29932, 'New Hampshire': 14056, 'New Jersey': 77360,
+  'New Mexico': 21476, 'New York': 118708, 'North Carolina': 120568,
+  'North Dakota': 10528, 'Ohio': 108888, 'Oklahoma': 46676,
+  'Oregon': 34552, 'Pennsylvania': 109532, 'Rhode Island': 7888,
+  'South Carolina': 64792, 'South Dakota': 10768, 'Tennessee': 88696,
+  'Texas': 347600, 'Utah': 29492, 'Vermont': 6440, 'Virginia': 89880,
+  'Washington': 59964, 'West Virginia': 20096, 'Wisconsin': 53604,
+  'Wyoming': 7588
+};
+
 const REGIONS = [
   { name: 'East Coast', id: 'R10' },
   { name: 'Midwest', id: 'R20' },
@@ -210,13 +231,23 @@ async function fetchEIAPrices() {
 
 function buildJSON(nationalPrice, statePrices, eiaPrices, dataDate, dataSource) {
   const regions = REGIONS.map(region => {
-    // Use EIA current regional price if available, otherwise average state prices in this PADD
-    let regionCurrent = eiaPrices ? eiaPrices[region.id] : null;
-    if (!regionCurrent && statePrices) {
+    // Prefer AAA state averages (daily, consumption-weighted) over EIA regional prices (weekly)
+    let regionCurrent = null;
+    if (statePrices) {
       const stateEntries = Object.entries(statePrices).filter(([name]) => STATE_TO_PADD[name] === region.id);
       if (stateEntries.length > 0) {
-        regionCurrent = stateEntries.reduce((sum, [, p]) => sum + p, 0) / stateEntries.length;
+        let totalWeight = 0;
+        let weightedSum = 0;
+        for (const [name, price] of stateEntries) {
+          const weight = STATE_GAS_CONSUMPTION[name] || 1;
+          weightedSum += price * weight;
+          totalWeight += weight;
+        }
+        regionCurrent = weightedSum / totalWeight;
       }
+    }
+    if (!regionCurrent && eiaPrices) {
+      regionCurrent = eiaPrices[region.id];
     }
 
     return {
