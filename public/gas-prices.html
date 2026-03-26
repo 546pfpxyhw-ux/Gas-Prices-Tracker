@@ -569,7 +569,7 @@
       '<div class="comparisons">' +
         (function() {
           var iranPct = pctChange(nat.current, nat.iranWar.price);
-          var yikes = Math.abs(iranPct) > 20 ? 'YIKES: ' : '';
+          var yikes = iranPct > 20 ? 'YIKES: ' : '';
           var label = nat.current >= nat.iranWar.price
             ? yikes + "Here's how much gas prices have spiked nationwide since Trump launched his war with Iran"
             : yikes + "Here's how much gas prices have dropped nationwide since Trump launched his war with Iran";
