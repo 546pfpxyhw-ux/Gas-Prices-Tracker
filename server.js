@@ -41,6 +41,23 @@ app.get('/api/refresh-prices', async (req, res) => {
   }
 });
 
+// Geo lookup — resolve visitor's state from their IP server-side
+app.get('/api/geo', async (req, res) => {
+  try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = forwarded ? forwarded.split(',')[0].trim() : req.socket.remoteAddress;
+    const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+    if (!geoRes.ok) {
+      return res.json({ region: null });
+    }
+    const geo = await geoRes.json();
+    res.json({ region: geo.region || null });
+  } catch (err) {
+    console.warn(`Geo lookup failed: ${err.message}`);
+    res.json({ region: null });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Gas Price Tracker server running on port ${PORT}`);
