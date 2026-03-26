@@ -553,8 +553,7 @@
       ? new Date(data.lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
       : null;
     var sourceLabel = 'Source: ' + (data.dataSource === 'AAA' ? 'AAA' : 'U.S. Energy Information Administration') +
-      (updatedDate ? ' &middot; Last updated ' + updatedDate : '') +
-      '<br>This application was built with the assistance of AI';
+      (updatedDate ? ' &middot; Last updated ' + updatedDate : '');
 
     widget.innerHTML =
       localHTML +
@@ -570,7 +569,7 @@
       '<div class="comparisons">' +
         (function() {
           var iranPct = pctChange(nat.current, nat.iranWar.price);
-          var yikes = Math.abs(iranPct) > 20 ? 'YIKES: ' : '';
+          var yikes = iranPct > 20 ? 'YIKES: ' : '';
           var label = nat.current >= nat.iranWar.price
             ? yikes + "Here's how much gas prices have spiked nationwide since Trump launched his war with Iran"
             : yikes + "Here's how much gas prices have dropped nationwide since Trump launched his war with Iran";
