@@ -210,13 +210,16 @@ async function fetchEIAPrices() {
 
 function buildJSON(nationalPrice, statePrices, eiaPrices, dataDate, dataSource) {
   const regions = REGIONS.map(region => {
-    // Use EIA current regional price if available, otherwise average state prices in this PADD
-    let regionCurrent = eiaPrices ? eiaPrices[region.id] : null;
-    if (!regionCurrent && statePrices) {
+    // Prefer AAA state averages (daily) over EIA regional prices (weekly)
+    let regionCurrent = null;
+    if (statePrices) {
       const stateEntries = Object.entries(statePrices).filter(([name]) => STATE_TO_PADD[name] === region.id);
       if (stateEntries.length > 0) {
         regionCurrent = stateEntries.reduce((sum, [, p]) => sum + p, 0) / stateEntries.length;
       }
+    }
+    if (!regionCurrent && eiaPrices) {
+      regionCurrent = eiaPrices[region.id];
     }
 
     return {
