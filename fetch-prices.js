@@ -50,25 +50,26 @@ const STATE_TO_PADD = {
   'Nevada': 'R50', 'Oregon': 'R50', 'Washington': 'R50'
 };
 
-// --- State gasoline consumption weights (EIA SEDS 2023, thousand barrels) ---
-// Source: U.S. Energy Information Administration, State Energy Data System, Table F10
-const STATE_GAS_CONSUMPTION = {
-  'Alabama': 75008, 'Alaska': 6248, 'Arizona': 70888, 'Arkansas': 36356,
-  'California': 314286, 'Colorado': 52948, 'Connecticut': 28924, 'Delaware': 9380,
-  'District of Columbia': 2692, 'Florida': 223810, 'Georgia': 136048,
-  'Hawaii': 10780, 'Idaho': 18928, 'Illinois': 104216, 'Indiana': 75832,
-  'Iowa': 35308, 'Kansas': 28240, 'Kentucky': 53872, 'Louisiana': 55692,
-  'Maine': 14924, 'Maryland': 51604, 'Massachusetts': 51488,
-  'Michigan': 92060, 'Minnesota': 54316, 'Mississippi': 38632,
-  'Missouri': 71260, 'Montana': 12236, 'Nebraska': 21132,
-  'Nevada': 29932, 'New Hampshire': 14056, 'New Jersey': 77360,
-  'New Mexico': 21476, 'New York': 118708, 'North Carolina': 120568,
-  'North Dakota': 10528, 'Ohio': 108888, 'Oklahoma': 46676,
-  'Oregon': 34552, 'Pennsylvania': 109532, 'Rhode Island': 7888,
-  'South Carolina': 64792, 'South Dakota': 10768, 'Tennessee': 88696,
-  'Texas': 347600, 'Utah': 29492, 'Vermont': 6440, 'Virginia': 89880,
-  'Washington': 59964, 'West Virginia': 20096, 'Wisconsin': 53604,
-  'Wyoming': 7588
+// --- State population weights (U.S. Census Bureau, 2024 estimates) ---
+// Source: census.gov/data/tables/time-series/demo/popest/2020s-state-total.html
+const STATE_POPULATION = {
+  'Alabama': 5157517, 'Alaska': 740339, 'Arizona': 7582323,
+  'Arkansas': 3067732, 'California': 39431263, 'Colorado': 5957493,
+  'Connecticut': 3675069, 'Delaware': 1042530, 'District of Columbia': 684498,
+  'Florida': 23372215, 'Georgia': 11104948, 'Hawaii': 1440196,
+  'Idaho': 2040587, 'Illinois': 12470631, 'Indiana': 6907760,
+  'Iowa': 3227975, 'Kansas': 2960843, 'Kentucky': 4561539,
+  'Louisiana': 4590677, 'Maine': 1415072, 'Maryland': 6261042,
+  'Massachusetts': 7136171, 'Michigan': 10012110, 'Minnesota': 5813398,
+  'Mississippi': 2924546, 'Missouri': 6223974, 'Montana': 1145195,
+  'Nebraska': 1988536, 'Nevada': 3302581, 'New Hampshire': 1410567,
+  'New Jersey': 9500851, 'New Mexico': 2150706, 'New York': 19571216,
+  'North Carolina': 10917270, 'North Dakota': 791012, 'Ohio': 11817335,
+  'Oklahoma': 4053834, 'Oregon': 4257599, 'Pennsylvania': 12991878,
+  'Rhode Island': 1110822, 'South Carolina': 5438861, 'South Dakota': 919413,
+  'Tennessee': 7216301, 'Texas': 31290831, 'Utah': 3483960,
+  'Vermont': 654930, 'Virginia': 8752729, 'Washington': 7999503,
+  'West Virginia': 1763950, 'Wisconsin': 5920789, 'Wyoming': 587618
 };
 
 const REGIONS = [
@@ -231,7 +232,7 @@ async function fetchEIAPrices() {
 
 function buildJSON(nationalPrice, statePrices, eiaPrices, dataDate, dataSource) {
   const regions = REGIONS.map(region => {
-    // Prefer AAA state averages (daily, consumption-weighted) over EIA regional prices (weekly)
+    // Prefer AAA state averages (daily, population-weighted) over EIA regional prices (weekly)
     let regionCurrent = null;
     if (statePrices) {
       const stateEntries = Object.entries(statePrices).filter(([name]) => STATE_TO_PADD[name] === region.id);
@@ -239,7 +240,7 @@ function buildJSON(nationalPrice, statePrices, eiaPrices, dataDate, dataSource) 
         let totalWeight = 0;
         let weightedSum = 0;
         for (const [name, price] of stateEntries) {
-          const weight = STATE_GAS_CONSUMPTION[name] || 1;
+          const weight = STATE_POPULATION[name] || 1;
           weightedSum += price * weight;
           totalWeight += weight;
         }
