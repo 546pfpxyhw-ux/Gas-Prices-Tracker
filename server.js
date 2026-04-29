@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cron = require('node-cron');
 const { updatePrices } = require('./fetch-prices');
+const { initDatabase, lookupState } = require('./geo-lookup');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,12 +47,8 @@ app.get('/api/geo', async (req, res) => {
   try {
     const forwarded = req.headers['x-forwarded-for'];
     const ip = forwarded ? forwarded.split(',')[0].trim() : req.socket.remoteAddress;
-    const geoRes = await fetch(`http://ipwho.is/${ip}`);
-    if (!geoRes.ok) {
-      return res.json({ region: null });
-    }
-    const geo = await geoRes.json();
-    res.json({ region: geo.region || null });
+    const region = await lookupState(ip);
+    res.json({ region });
   } catch (err) {
     console.warn(`Geo lookup failed: ${err.message}`);
     res.json({ region: null });
@@ -61,6 +58,11 @@ app.get('/api/geo', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Gas Price Tracker server running on port ${PORT}`);
+
+  // Initialize MaxMind geo database (downloads if MAXMIND_LICENSE_KEY is set)
+  initDatabase().catch(err => {
+    console.warn(`Geo database init failed: ${err.message}`);
+  });
 
   // Fetch prices on startup
   updatePrices().catch(err => {
